@@ -9,7 +9,7 @@
 #define gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
 
 int gameboard[square*square] = {
-    1, 2, 3, 4, 5, 6, 7, 8, 9,
+    9, 8, 7, 6, 5, 4, 3, 2, 1,
     0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -35,7 +35,7 @@ void print_row(char left_edge[4], char space[4], char content[4], char thin_divi
                         printf("%s", space);
                     else
                         if(content[0] == '!')
-                            printf("%c", pieceLetters[gameboard[gameboardIndex++]]);
+                            printf("%c", pieceLetters[gameboard[(gameboardIndex++)%(square*square)]]);
                         else
                             printf("%s", content);
                 if(j != root)
@@ -56,7 +56,7 @@ void draw_gameboard()
     {
         for(int i = 1; i <= root; i++)
         {
-            print_row("║", " ", "?", "│", "║", "║");
+            print_row("║", " ", "!", "│", "║", "║");
             if(i!=root)
                 print_row("╟", "─", "─", "┼", "╫", "╢");
         }
@@ -80,14 +80,51 @@ void fill_numbers()
             fill_number(x, y, pieceLetters[gameboard[x + y * square]]);
 }
 
+_Bool is_solved()
+{
+    //Check columns
+    for(int x = 0; x < square; x++)
+    {
+        int colContains[square];
+        for(int y = 0; y < square; y++)
+            colContains[y] = gameboard[x + y * square];
+    
+        for(int i = 0; i < square; i++)
+        {
+            printf("Col %i at %i: %i\n", x+1, i+1, colContains[i]);
+        }
+    }
+
+    //Check rows
+    for(int y = 0; y < square; y++)
+    {
+        int rowContains[square];
+        for(int x = 0; x < square; x++)
+            rowContains[x] = gameboard[x + y * square];
+    
+        for(int i = 0; i < square; i++)
+        {
+            printf("Row %i at %i: %i\n", y+1, i+1, rowContains[i]);
+        }
+    }
+
+    return 1;
+}
+
 int main()
 {
     SetConsoleOutputCP(CP_UTF8);
+    draw_gameboard();
+    
     printf("Press Enter to begin...");
     getchar();
+
     clear();
     draw_gameboard();
 
+    is_solved();
+
+    return 0;
     for(int i = 0; i < 2300; i++)
     {
         fill_numbers();
