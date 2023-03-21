@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/main.exe",
             "cwd": "${workspaceFolder}",
-            "console": "integratedTerminal"
+            "console": "externalTerminal"
         }
         
     ]
