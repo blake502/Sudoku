@@ -2,9 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug (Windows)",
+            "name": "Debug",
             "type": "cppvsdbg",
             "request": "launch",
+            "program": "${workspaceFolder}/bin/main.exe",
+            "cwd": "${workspaceFolder}",
+            "console": "externalTerminal"
+        },
+        {
+            "name": "Build & Debug",
+            "type": "cppvsdbg",
+            "request": "launch",
+            "preLaunchTask": "Build project",
             "program": "${workspaceFolder}/bin/main.exe",
             "cwd": "${workspaceFolder}",
             "console": "externalTerminal"
