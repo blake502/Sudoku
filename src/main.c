@@ -9,15 +9,15 @@
 #define gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
 
 int gameboard[square*square] = {
-    9, 8, 7, 6, 5, 4, 3, 2, 1,
-    0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0};
+    1, 4, 7, 2, 8, 6, 3, 5, 9,
+    2, 5, 8, 3, 7, 9, 1, 4, 6,
+    3, 6, 9, 1, 5, 4, 7, 2, 8,
+    4, 7, 1, 6, 9, 5, 2, 8, 3,
+    5, 8, 2, 7, 1, 3, 6, 9, 4,
+    6, 9, 3, 4, 2, 8, 5, 7, 1,
+    7, 1, 4, 8, 3, 2, 9, 6, 5,
+    8, 2, 5, 9, 6, 1, 4, 3, 7,
+    9, 3, 6, 5, 4, 7, 8, 1, 2};
 
 static int gameboardIndex = 0;
 char* pieceLetters = " 1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -85,28 +85,36 @@ _Bool is_solved()
     //Check columns
     for(int x = 0; x < square; x++)
     {
-        int colContains[square];
+        int *colContains = malloc(sizeof(int) * square);
+        ZeroMemory(colContains, sizeof(int) * square);
         for(int y = 0; y < square; y++)
-            colContains[y] = gameboard[x + y * square];
+            colContains[gameboard[y * square + x]-1]++;
     
         for(int i = 0; i < square; i++)
-        {
-            printf("Col %i at %i: %i\n", x+1, i+1, colContains[i]);
-        }
+            if (colContains[i] != 1)
+            {
+                printf("The puzzle is not solved, because column %i contains %i instances of %c\n", x+1, colContains[i], pieceLetters[i+1]);
+                return 0;
+            }
     }
 
     //Check rows
     for(int y = 0; y < square; y++)
     {
-        int rowContains[square];
+        int *rowContains = malloc(sizeof(int) * square);
+        ZeroMemory(rowContains, sizeof(int) * square);
         for(int x = 0; x < square; x++)
-            rowContains[x] = gameboard[x + y * square];
+            rowContains[gameboard[y * square + x]-1]++;
     
         for(int i = 0; i < square; i++)
-        {
-            printf("Row %i at %i: %i\n", y+1, i+1, rowContains[i]);
-        }
+            if (rowContains[i] != 1)
+            {
+                printf("The puzzle is not solved, because column %i contains %i instances of %c\n", y+1, rowContains[i], pieceLetters[i+1]);
+                return 0;
+            }
     }
+
+    //TODO: Check boxes
 
     return 1;
 }
