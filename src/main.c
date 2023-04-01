@@ -174,7 +174,7 @@ position2D getSpaceWithLowestEntropy()
     position.y = -1;
     for(int x = 0; x < square; x++)
         for(int y = 0; y < square; y++)
-            if(gameboard[y*square + x] == 0)
+            if(gameboard[y * square + x] == 0)
             {
                 int entropy = getEntropy(x, y);
                 
@@ -185,9 +185,6 @@ position2D getSpaceWithLowestEntropy()
                     position.y = y;
                 }
             }
-
-    if(lowestEntropy == 0 || lowestEntropy == square + 1)
-        return position;
 
     return position;
 }
